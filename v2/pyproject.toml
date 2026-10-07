@@ -1,0 +1,13 @@
+# Single source of lint/format config for v2. ruff (lint + format) is the
+# linter run by pre-commit and CI; it also covers the pycodestyle (E/W) and
+# isort rules that flake8 used to.
+#
+# To allow longer lines, change the one number below.
+
+[tool.ruff]
+line-length = 88
+# The formatter enforces the 88-char limit on code. E501 additionally flags
+# long lines the formatter can't fix -- here, SQL inside triple-quoted
+# f-strings, which we deliberately keep on one line. Turn it off so those
+# don't fail the commit.
+ignore = ["E501"]

@@ -1,0 +1,178 @@
+# Huang Lab default .gitignore
+#
+# ANCHORING MATTERS. A pattern without a leading slash matches at ANY depth.
+# `tests/` would silently swallow `crates/*/tests/` - this actually happened in
+# fastVEP and hid four integration test files from every fresh clone for months.
+# Anchor directory patterns you mean literally: `/data/`, not `data/`.
+# Verify with: git check-ignore -v <path>
+
+# ---- Data: raw data never enters git. See data/README.md ----
+# `/data/*` not `/data/`: git cannot re-include a file whose parent directory is
+# excluded, so the two negations below would silently do nothing.
+/data/*
+!/data/README.md
+!/data/.gitkeep
+*.vcf
+*.vcf.gz
+*.bam
+*.cram
+*.fastq
+*.fastq.gz
+*.fq.gz
+*.bcf
+*.bed
+*.bim
+*.fam
+*.pgen
+*.psam
+*.pvar
+*.h5
+*.hdf5
+*.feather
+*.parquet
+*.rds
+*.RData
+*.sav
+*.dta
+
+# ---- Cluster job output: never commit. See CONVENTIONS.md#data ----
+*.stdout
+*.stderr
+*.out
+*.err
+/logs/
+slurm-*.out
+lsf-*.out
+*.lsf.log
+core.[0-9]*
+
+# ---- Agent session logs and local agent state ----
+.claude/
+!.claude/settings.json
+.aider*
+.cursor/
+CLAUDE.local.md
+AGENTS.local.md
+
+# ---- Secrets ----
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+!**/testdata/*.key
+credentials.json
+service-account*.json
+.netrc
+token.txt
+
+# ---- Scratch files: if it is worth committing, it is worth naming ----
+tmp.*
+temp.*
+scratch.*
+test.R
+Untitled*
+*~
+*.bak
+*.orig
+*.swp
+
+# ---- OS ----
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# ---- Editors ----
+.vscode/
+!.vscode/extensions.json
+.idea/
+*.iml
+.\#*
+\#*\#
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+/build/
+/dist/
+/sdist/
+*.egg-info/
+.eggs/
+.installed.cfg
+.venv/
+venv/
+env/
+ENV/
+.tox/
+.nox/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.pyre/
+.dmypy.json
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+*.cover
+.hypothesis/
+.python-version
+
+# ---- Jupyter ----
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+profile_default/
+ipython_config.py
+# If you use the nbbuild pattern (notebooks built from builders/*.py), also
+# ignore the built notebooks and commit only the Python sources:
+# /pipeline/*.ipynb
+
+# ---- R ----
+.Rhistory
+.Rapp.history
+.RData
+.Ruserdata
+.Rproj.user/
+*.Rproj
+.httr-oauth
+/renv/library/
+/renv/local/
+/renv/staging/
+/renv/python/
+!/renv/activate.R
+!/renv.lock
+*.Rcheck/
+.lintr.local
+pkgdown/
+
+# ---- Rust ----
+/target/
+**/*.rs.bk
+*.pdb
+# Cargo.lock IS committed for binaries and workspaces with binaries.
+# Uncomment only for a library-only crate published to crates.io:
+# Cargo.lock
+
+# ---- Nextflow / workflow engines ----
+.nextflow/
+.nextflow.log*
+/work/
+/.snakemake/
+timeline*.html
+report*.html
+trace*.txt
+dag*.dot
+
+# ---- Results: only frozen, dated result dirs are committed ----
+# See results/README.md. Uncomment to keep all results out of git:
+# /results/
+/results/scratch/
+/results/tmp/
