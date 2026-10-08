@@ -127,6 +127,19 @@ PPI_SYMPTOM_KEYWORDS = {
     "brain_fog": ["%concentrate%", "%memory%", "%cognitive%", "%brain fog%"],
 }
 
+# PPI survey *answer* values that affirm a symptom is ABSENT / resolved ("gone").
+# Matched (by keyword, case-insensitive) against PPI answer concept names so a
+# post-treatment survey answer can positively confirm resolution rather than
+# inferring it from a missing record. Review the matched concepts before relying
+# on them -- PPI answer wording varies by survey module.
+PPI_ABSENT_ANSWER_KEYWORDS = [
+    "%not at all%",
+    "%none of the time%",
+    "%never%",
+    "%no symptoms%",
+    "%symptom-free%",
+]
+
 
 @dataclass
 class CohortConfig:

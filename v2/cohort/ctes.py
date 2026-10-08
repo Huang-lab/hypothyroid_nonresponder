@@ -25,6 +25,7 @@ from .config import (
     HYPO_ICD9,
     HYPO_ICD10,
     HYPO_SYMPTOMS,
+    PPI_ABSENT_ANSWER_KEYWORDS,
     PPI_SYMPTOM_KEYWORDS,
 )
 from .sqlutil import concept_id_cte, id_list, quoted_list
@@ -274,6 +275,26 @@ def ppi_symptom_concepts_cte(cfg: CohortConfig) -> str:
     union = "\n        UNION ALL\n".join(blocks)
     return f"""ppi_symptom_concepts AS (
 {union}
+)"""
+
+
+def ppi_absent_answer_concepts_cte(cfg: CohortConfig) -> str:
+    """``ppi_absent_answer_concepts``: PPI answer concepts meaning "symptom gone".
+
+    PPI survey answers are coded in ``observation.value_as_concept_id``; this set
+    identifies the answer concepts that affirm the symptom is absent/resolved
+    (e.g. "Not at all"), so a post-treatment answer can positively confirm
+    resolution. Matched by keyword on the answer concept name -- review the result.
+    Degrades to the empty set (no confirmed-resolution class) if nothing matches.
+    """
+    like = " OR ".join(
+        f"LOWER(concept_name) LIKE '{p}'" for p in PPI_ABSENT_ANSWER_KEYWORDS
+    )
+    return f"""ppi_absent_answer_concepts AS (
+    SELECT concept_id
+    FROM `{cfg.dataset}.concept`
+    WHERE vocabulary_id = 'PPI' AND concept_class_id = 'Answer'
+      AND ({like})
 )"""
 
 

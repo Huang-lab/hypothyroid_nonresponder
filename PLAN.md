@@ -74,6 +74,23 @@ Query ICD-10 codes for hypothyroidism-associated symptoms, stratified pre- vs. p
 - Edema (R60.x)
 - Dyslipidemia (E78.x) — commonly secondary to hypothyroidism
 
+Classify each treated member by comparing pre-T4 symptom categories against a post-T4
+window:
+- **Symptom non-responder** — ≥ 1 pre-T4 symptom category recurs in the post-T4 window.
+- **Symptom responder** — had ≥ 1 pre-T4 symptom category, none of which recur post-T4.
+- **No pre-T4 symptom** — no target symptom coded in the pre-T4 window; not classifiable
+  on symptoms.
+
+A post-T4 *absence* of a symptom code reflects the lack of a coded encounter rather than
+confirmed resolution, so the symptom responder/non-responder split is supportive evidence,
+secondary to the biochemical (TSH) classification.
+
+For the **PPI survey** path, the coded answer value (`observation.value_as_concept_id`) is
+read rather than mere record presence, adding a positively-confirmed class:
+- **Symptom responder (confirmed)** — a post-T4 survey answer affirms the symptom is gone
+  (e.g. "Not at all" / "Never"); such an answer is also excluded from the persistence set.
+- **Symptom responder (inferred)** — pre-T4 symptom, no post-T4 record at all (weaker).
+
 **Patient-reported outcomes (subjective):**
 - All of Us PPI (Program for Patient Insights) survey data for self-reported fatigue, sleep quality, energy levels, and cognitive symptoms
 

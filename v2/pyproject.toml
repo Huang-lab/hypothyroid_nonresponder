@@ -4,6 +4,12 @@
 #
 # To allow longer lines, change the one number below.
 
+[tool.pytest.ini_options]
+# Tests only build SQL strings; they never touch BigQuery. ``pythonpath = ["."]``
+# makes the ``cohort`` package importable when pytest runs from this directory.
+pythonpath = ["."]
+testpaths = ["tests"]
+
 [tool.ruff]
 line-length = 88
 # The formatter enforces the 88-char limit on code. E501 additionally flags
