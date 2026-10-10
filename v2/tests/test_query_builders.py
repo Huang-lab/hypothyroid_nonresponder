@@ -13,8 +13,19 @@ import inspect
 
 import pytest
 
+import yaml
+
 from cohort import queries
 from cohort.config import CohortConfig
+from pathlib import Path
+
+
+def _make_cfg_yaml(enable_drug_exclusions: bool = False) -> CohortConfig:
+    cfg_path = Path(__file__).parent / "cfg.yaml"
+    with open(cfg_path, "r") as f:
+        config = yaml.safe_load(f)
+    config["enable_drug_exclusions"] = enable_drug_exclusions
+    return CohortConfig(**config)
 
 
 def _make_cfg(enable_drug_exclusions: bool = False) -> CohortConfig:
@@ -28,6 +39,7 @@ def _make_cfg(enable_drug_exclusions: bool = False) -> CohortConfig:
     cfg.interfering_drug_ids = [901, 902]
     cfg.disrupting_drug_ids = [903]
     cfg.desiccated_ingredient_ids = [904]
+    cfg = _make_cfg_yaml(enable_drug_exclusions=enable_drug_exclusions)
     return cfg
 
 
